@@ -4,14 +4,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-class PickupRequest():
-
-    def __init__(self, time,floor,direction, destination):
-        self.time = time
-        self.floor = floor
-        self.direction = direction
-        self.destination = destination
-
 class Direction(Enum):
     DOWN = -1
     IDLE = 0
@@ -19,6 +11,14 @@ class Direction(Enum):
 
     def __str__(self):
         return self.name.capitalize()
+    
+class PickupRequest():
+
+    def __init__(self, time,floor,direction, destination):
+        self.time = time
+        self.floor = floor
+        self.direction = direction
+        self.destination = destination
 
 class Elevator():
 
@@ -46,10 +46,7 @@ class Elevator():
 
     def request_floor(self, floor):
         self.destination_requests.add(floor)
-    
-    def report_status(self, time):
-        logging.debug(f"Time: {time} - Elevator is currently at floor {self.current_floor} and moving {self.direction}")
-    
+
     def report_pickup(self, time):
         logging.debug(f"Time: {time} - Picking up passengers at {self.current_floor}")
     
@@ -102,7 +99,7 @@ class Elevator():
         self.pickup_at_current_floor(time) 
         self.drop_off_at_current_floor(time)
 
-        # If elevator is IDLE then handle the first available pickup or drop off request.
+        # If elevator is idle then handle the first available pickup or drop off request.
         if self.direction == Direction.IDLE:
             if self.has_pickup_requests():
                 if self.pickup_requests[0].floor > self.current_floor:
@@ -123,7 +120,7 @@ class Elevator():
 
 
         elif self.direction == Direction.UP:
-            # If elevator is moving up then ensure that a pick up or dropoff request exists for a higher floor, if not then start to move dow or go idle.
+            # If elevator is moving up then ensure that a pick up or dropoff request exists for a higher floor, if not then start to move down or go idle.
             if (self.destination_requests and max(self.destination_requests) > self.current_floor) or (
                 self.has_pickup_requests() and self.pickup_requests[0].floor > self.current_floor
                 ):
@@ -159,7 +156,6 @@ class Elevator():
         if not self.has_pickup_requests() and not self.destination_requests:
             self.direction = Direction.IDLE
     
-        self.report_status(time)
         self.report_state(time)
                     
 class ElevatorController():
@@ -170,6 +166,8 @@ class ElevatorController():
         self.time = 0
     
     def run(self):
+
+        # Simulate sending timed requests
         while len(self.requests) > 0 or self.elevator.has_pending_requests():
             while len(self.requests) > 0 and self.requests[-1].time <= self.time:
                 new_request = self.requests.pop()
@@ -177,23 +175,24 @@ class ElevatorController():
             self.elevator.move(self.time)
             self.time += 1
 
+
+
 requests = [
-    PickupRequest(**{"time": 1, "floor": 5, "direction": Direction.DOWN, "destination": 2}),
-    PickupRequest(**{"time": 2, "floor": 8, "direction": Direction.UP, "destination":10}),
-    PickupRequest(**{"time": 3, "floor": 4, "direction": Direction.UP, "destination":9}),
-    PickupRequest(**{"time": 7, "floor": 5, "direction": Direction.DOWN, "destination": 1}),
-    PickupRequest(**{"time": 8, "floor": 3, "direction": Direction.DOWN, "destination": 1}),
-    PickupRequest(**{"time": 4, "floor": 5, "direction": Direction.DOWN, "destination": 2}),
-    PickupRequest(**{"time": 7, "floor": 8, "direction": Direction.UP, "destination":10}),
-    PickupRequest(**{"time": 9, "floor": 4, "direction": Direction.UP, "destination":9}),
-    PickupRequest(**{"time": 14, "floor": 5, "direction": Direction.DOWN, "destination": 1}),
-    PickupRequest(**{"time": 30, "floor": 3, "direction": Direction.DOWN, "destination": 1}),
+    {"time": 1, "floor": 5, "direction": Direction.DOWN, "destination": 2},
+    {"time": 2, "floor": 8, "direction": Direction.UP, "destination":10},
+    {"time": 3, "floor": 4, "direction": Direction.UP, "destination":9},
+    {"time": 7, "floor": 5, "direction": Direction.DOWN, "destination": 1},
 ]
+
 
 floors = 10
 elevator = Elevator(floors)
 
-controller = ElevatorController(requests=requests, elevator=elevator)
+controller = ElevatorController(
+    requests=list([PickupRequest(**request) for request in requests]), 
+    elevator=elevator
+    )
+
 controller.run()
 
 

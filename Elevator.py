@@ -196,4 +196,44 @@ controller = ElevatorController(
 controller.run()
 
 
+"""
+
+The requests above will output the following logs:
+
+INFO:root:{'time': 0, 'direction': 'Idle', 'floor': 1}
+INFO:root:{'time': 1, 'direction': 'Up', 'floor': 2}
+INFO:root:{'time': 2, 'direction': 'Up', 'floor': 3}
+INFO:root:{'time': 3, 'direction': 'Up', 'floor': 4}
+INFO:root:{'time': 4, 'direction': 'Up', 'floor': 5}
+DEBUG:root:Time: 5 - Picking up passengers at 5
+INFO:root:{'time': 5, 'direction': 'Down', 'floor': 4}
+INFO:root:{'time': 6, 'direction': 'Down', 'floor': 3}
+INFO:root:{'time': 7, 'direction': 'Down', 'floor': 2}
+DEBUG:root:Time: 8 - Dropping off passengers at 2
+INFO:root:{'time': 8, 'direction': 'Up', 'floor': 3}
+DEBUG:root:Time: 9 - Picking up passengers at 4
+INFO:root:{'time': 9, 'direction': 'Up', 'floor': 4}
+INFO:root:{'time': 10, 'direction': 'Up', 'floor': 5}
+INFO:root:{'time': 11, 'direction': 'Up', 'floor': 6}
+INFO:root:{'time': 12, 'direction': 'Up', 'floor': 7}
+DEBUG:root:Time: 13 - Picking up passengers at 8
+INFO:root:{'time': 13, 'direction': 'Up', 'floor': 8}
+INFO:root:{'time': 14, 'direction': 'Up', 'floor': 9}
+DEBUG:root:Time: 15 - Dropping off passengers at 9
+INFO:root:{'time': 15, 'direction': 'Up', 'floor': 10}
+DEBUG:root:Time: 16 - Dropping off passengers at 10
+INFO:root:{'time': 16, 'direction': 'Down', 'floor': 9}
+INFO:root:{'time': 17, 'direction': 'Down', 'floor': 8}
+INFO:root:{'time': 18, 'direction': 'Down', 'floor': 7}
+INFO:root:{'time': 19, 'direction': 'Down', 'floor': 6}
+DEBUG:root:Time: 20 - Picking up passengers at 5
+INFO:root:{'time': 20, 'direction': 'Down', 'floor': 5}
+INFO:root:{'time': 21, 'direction': 'Down', 'floor': 4}
+INFO:root:{'time': 22, 'direction': 'Down', 'floor': 3}
+INFO:root:{'time': 23, 'direction': 'Down', 'floor': 2}
+INFO:root:{'time': 24, 'direction': 'Down', 'floor': 1}
+DEBUG:root:Time: 25 - Dropping off passengers at 1
+INFO:root:{'time': 25, 'direction': 'Idle', 'floor': 1}
+"""
+
         

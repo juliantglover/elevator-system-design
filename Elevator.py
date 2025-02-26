@@ -176,7 +176,7 @@ class ElevatorController:
 
     def __init__(self, elevator, requests):
         self.elevator = elevator
-        self.requests = sorted(requests, key=attrgetter("time"))
+        self.requests = sorted(requests, key=attrgetter("time"), reverse=True)
         self.time = 0
 
     def run(self):
